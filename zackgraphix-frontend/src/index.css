@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+@theme {
+  --color-canvas: #ffffff;
+  --color-ink: #151515;
+  --color-muted: #555555;
+  --color-soft: #fff2e9;
+  --color-surface: #f7f7f5;
+  --color-line: #e6e2de;
+  --color-cta: #c94d00;
+  --color-cta-hover: #b94700;
+  --color-brand: #e85d04;
+  --font-heading: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  body { @apply bg-canvas text-ink font-body; }
+  :focus-visible { outline: 3px solid var(--color-brand); outline-offset: 3px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
