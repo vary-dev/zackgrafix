@@ -2,6 +2,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import Container from './components/Container'
 import Button from './components/Button'
+import Hero from './sections/Hero'
 
 export default function App() {
   return (
@@ -14,17 +15,9 @@ export default function App() {
       </a>
       <Header />
       <main id="main">
-        <Container className="h-[150vh] py-16">
-          <h1 className="font-heading text-4xl font-bold">Sections go here</h1>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button>Primary</Button>
-            <Button variant="outline">Outline</Button>
-            <Button variant="dark">Dark</Button>
-          </div>
-          <div className="mt-8 inline-block rounded-2xl bg-ink p-6">
-            <Button variant="light">Light</Button>
-          </div>
-        </Container>
+        <main id="main">
+        <Hero />
+      </main>
       </main>
       <Footer />
     </div>
