@@ -1,11 +1,11 @@
 
 
-const variants={
-    primary:"bg-cta text-white hover:bg-cta-hover",
-    outline:"border-2 border-ink text-ink hover:bg-ink hover:text-white",
-    dark:"bg-ink tetx-ink hover:bg-soft",
+const variants = {
+  primary: 'bg-cta text-white hover:bg-cta-hover',
+  outline: 'border border-ink text-ink hover:bg-ink hover:text-white dark:border-canvas dark:text-canvas dark:hover:bg-canvas dark:hover:text-ink',
+  dark: 'bg-ink text-white hover:bg-cta',
+  light: 'bg-white text-ink hover:bg-soft',
 }
-
 const sizes ={
     md:"px-7 py-3.3",
     sm:"px-5 py-3 text-[15px]"

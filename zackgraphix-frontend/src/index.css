@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-canvas: #ffffff;
@@ -16,7 +17,7 @@
 
 @layer base {
   html { scroll-behavior: smooth; scroll-padding-top: 88px; }
-  body { @apply bg-canvas text-ink font-body; }
+    body { @apply bg-canvas text-ink font-body dark:bg-ink dark:text-canvas; }
   :focus-visible { outline: 3px solid var(--color-brand); outline-offset: 3px; }
 }
 @media (prefers-reduced-motion: reduce) {
