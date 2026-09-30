@@ -16,11 +16,101 @@
 }
 
 @layer base {
-  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
-    body { @apply bg-canvas text-ink font-body dark:bg-ink dark:text-canvas; }
-  :focus-visible { outline: 3px solid var(--color-brand); outline-offset: 3px; }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+    --color-canvas: #111111;
+    --color-ink: #f5f5f2;
+    --color-muted: #b7b7b2;
+    --color-soft: #2c2119;
+    --color-surface: #1b1b1b;
+    --color-line: #343434;
+  }
+
+  body {
+    @apply bg-canvas text-ink font-body;
+    margin: 0;
+  }
+
+  button,
+  a,
+  input {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:not(:disabled),
+  summary {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-brand);
+    outline-offset: 4px;
+  }
+
+  ::selection {
+    background: #e85d04;
+    color: white;
+  }
+
+  dialog {
+    color: var(--color-ink);
+    background: var(--color-canvas);
+  }
+
+  dialog::backdrop {
+    background: rgb(0 0 0 / 72%);
+  }
 }
+
+/* Preserve the normal pointer and add a restrained branded halo. */
+.cursor-halo {
+  position: fixed;
+  inset: 0 auto auto 0;
+  z-index: 100;
+  width: 24px;
+  height: 24px;
+  border: 1px solid #e85d04;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  translate: -50% -50%;
+  transition:
+    width 140ms ease,
+    height 140ms ease,
+    background-color 140ms ease;
+}
+
+.cursor-halo[data-active="true"] {
+  width: 40px;
+  height: 40px;
+  background: rgb(232 93 4 / 9%);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-halo {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  * { transition: none !important; }
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .cursor-halo {
+    display: none;
+  }
 }

@@ -3,93 +3,90 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Link, useLocation } from "react-router";
+import { Menu, X, Moon, Sun } from "lucide-react";
 import Container from "./Container";
 import Button from "./Button";
-import ThemeToggle from './ThemeToggle'
+import useTheme from "../hooks/useTheme";
 
 const links = [
-  { label: "Explore Work", href: "#projects" },
-  { label: "Find Deigners", href: "#designers" },
-  { label: "Jobs", href: "#jobs" },
-  { label: "How it works", href: "#how" },
+  { label: "Explore work", id: "work" },
+  { label: "Hire talent", id: "hire" },
+  { label: "How it works", id: "how" },
 ];
-const Header = () => {
+
+export default function Header() {
+  const { pathname } = useLocation();
+  const { isDark, toggle } = useTheme();
+  const sectionHref = (id) => pathname === "/" ? `#${id}` : `/#${id}`;
+
   return (
     <Disclosure
-      as="Header"
-      className="sticky top-0 z-40  border-b border-line bg-canvas dark:bg-ink"
+      as="header"
+      className="sticky top-0 z-40 border-b border-line bg-canvas"
     >
-      {({ close }) => (
+      {({ open, close }) => (
         <>
-          <Container className="flex items-center justify-between py-2">
-            <a href="#top" aria-label="Zackgraphic home">
-              <img
-                src="/public/assets/logo.png"
-                alt="logo"
-                width="56"
-                height="56"
-                className="h-14 w-14 dark:invert"
-              />
-            </a>
-
-            <nav
-              aria-label="Main"
-              className="hidden gap-8 text-[15px] font-medium md:flex"
+          <Container className="flex min-h-20 items-center justify-between gap-3">
+            <Link
+              to="/"
+              aria-label="Zackgrafix home"
+              className="font-heading text-xl font-bold tracking-tight sm:text-2xl"
             >
-              {links.map((i) => (
-                <a href={i.href} key={i.href} className="hover:text-cta dark:hover:text-brand">
-                  
-                  {i.label}
+              Zack<span className="text-brand">grafix</span>
+            </Link>
+
+            <nav aria-label="Main navigation" className="hidden gap-7 md:flex">
+              {links.map(({ label, id }) => (
+                <a
+                  key={id}
+                  href={sectionHref(id)}
+                  className="py-3 text-sm font-medium transition-colors hover:text-cta"
+                >
+                  {label}
                 </a>
-))}
+              ))}
             </nav>
 
-            <div className="flex items-center gap-3">
-              <a
-                href="#join"
-                className="hidden px-2 py-3 text-[15px] font-medium hover:text-cta  dark:hover:text-brand sm:block"
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={toggle}
+                aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+                className="grid h-11 w-11 place-items-center rounded-md hover:bg-surface"
               >
-                Log In
-              </a>
-                <ThemeToggle />
-              <Button href="#join" size="sm">
-                Join Zackgrafix
-              </Button>
-              <DisclosureButton className="group flex h-11 w-11 items-center justify-center rounded-full border border-line dark:hover:bg-surface md:hidden">
-                <span className="sr-only">Menu</span>
-                <Bars3Icon
-                  className=" relative h-6 w-6 group-data-open:hidden dark:hover:text-slate-950 text-slate-950 dark:text-white"
-                  aria-hidden="true"
-                />
-                <XMarkIcon
-                  className="relative hidden h-6 w-6 dark:hover:text-slate-950 group-data-open:block  dark:text-white"
-                  aria-hidden="true"
-                />
+                {isDark ? <Sun size={18} /> : <Moon size={18} />}
+              </button>
+
+              <Button to="/join" size="sm">Join us</Button>
+
+              <DisclosureButton className="grid h-11 w-11 place-items-center rounded-md md:hidden">
+                <span className="sr-only">
+                  {open ? "Close navigation" : "Open navigation"}
+                </span>
+                {open ? <X size={22} /> : <Menu size={22} />}
               </DisclosureButton>
             </div>
           </Container>
 
-          <DisclosurePanel className="border border-line bg-surface dark:bg-ink md:hidden w-[200px] rounded-xl absolute right-5">
-<nav aria-label="Mobile" className="flex flex-col p-3">
-{[...links,{label:"Log in",href:"#join"}].map((i) =>(
-    <a key ={i.label}
-    href ={i.href}
-    onClick = {() => close()}
-    className="rounded-xl px-4 py-2 text-lg font-medium hover:bg-[#fff2e9] dark:hover:bg-[#3a2512]">
-
-{i.label}
-    </a>
-    
-))}
-
-</nav>
-
+          <DisclosurePanel className="border-t border-line bg-canvas md:hidden">
+            <Container>
+              <nav aria-label="Mobile navigation" className="grid py-3">
+                {links.map(({ label, id }) => (
+                  <a
+                    key={id}
+                    href={sectionHref(id)}
+                    onClick={() => close()}
+                    className="rounded-md px-3 py-3 text-sm font-medium hover:bg-surface"
+                  >
+                    {label}
+                  </a>
+                ))}
+              </nav>
+            </Container>
           </DisclosurePanel>
         </>
       )}
     </Disclosure>
   );
-};
-
-export default Header;
+}

@@ -1,31 +1,33 @@
+import { Link, useLocation } from "react-router";
+import Container from "./Container";
 
-import Container from "./Container"
+export default function Footer() {
+  const { pathname } = useLocation();
+  const href = (id) => pathname === "/" ? `#${id}` : `/#${id}`;
 
-const links = [
-  { label: 'Explore Work', href: '#projects' },
-  { label: 'Find Designers', href: '#designers' },
-  { label: 'Jobs', href: '#jobs' },
-  { label: 'How It Works', href: '#how' },
-]
-
-
-const Footer = () => {
- return (
-    <footer className="border-t border-line dark:bg-ink">
-      <Container className="flex flex-col gap-8 py-12 md:flex-row md:justify-between">
-        <div className="flex items-center gap-3">
-          <img src="/assets/logo.png" alt="Zackgrafix" width="56" height="56" className="h-14 w-14 dark:invert" />
-          <p className="max-w-xs text-sm text-muted">A home for remarkable design, starting in Rwanda.</p>
+  return (
+    <footer className="border-t border-line">
+      <Container className="flex flex-col justify-between gap-8 py-10 md:flex-row">
+        <div>
+          <Link to="/" className="font-heading text-2xl font-bold tracking-tight">
+            Zack<span className="text-brand">grafix</span>
+          </Link>
+          <p className="mt-3 max-w-sm text-sm leading-6 text-muted">
+            A home for remarkable design, starting in Rwanda.
+          </p>
         </div>
-        <nav aria-label="Footer" className="flex flex-wrap gap-x-10 gap-y-3 text-sm ">
-          {links.map((l) => (
-            <a key={l.href} href={l.href} className="hover:text-cta dark:hover:text-brand">{l.label}</a>
-          ))}
+
+        <nav aria-label="Footer navigation" className="flex flex-wrap items-start gap-x-7 gap-y-4 text-sm">
+          <a href={href("work")} className="hover:text-cta">Explore work</a>
+          <a href={href("hire")} className="hover:text-cta">Hire talent</a>
+          <a href={href("how")} className="hover:text-cta">How it works</a>
+          <Link to="/join" className="hover:text-cta">Join us</Link>
         </nav>
       </Container>
-      <p className="border-t border-line py-5 text-center text-sm text-muted">&copy; 2026 Zackgrafix</p>
-    </footer>
-  )
-}
 
-export default Footer
+      <Container className="border-t border-line py-5 text-xs text-muted">
+        © {new Date().getFullYear()} Zackgrafix
+      </Container>
+    </footer>
+  );
+}
