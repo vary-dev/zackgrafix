@@ -3,29 +3,79 @@ import Container from "./Container";
 
 export default function Footer() {
   const { pathname } = useLocation();
-  const href = (id) => pathname === "/" ? `#${id}` : `/#${id}`;
+  const anchor = (id) => pathname === "/" ? `#${id}` : `/#${id}`;
+
+  const columns = [
+    {
+      title: "Platform",
+      links: [
+        ["How it works", anchor("how")],
+        ["Explore work", anchor("work")],
+        ["Talent directory", "/talent"],
+      ],
+    },
+    {
+      title: "For talent",
+      links: [
+        ["Create your profile", "/join?role=designer"],
+        ["Discover opportunities", anchor("opportunities")],
+      ],
+    },
+    {
+      title: "For employers",
+      links: [
+        ["Hiring guide", anchor("hire")],
+        ["Browse talent", "/talent"],
+        ["Join as employer", "/join?role=employer"],
+      ],
+    },
+    {
+      title: "Community",
+      links: [
+        ["About Zackgrafix", anchor("community")],
+        ["Knowledge hub", anchor("resources")],
+      ],
+    },
+  ];
 
   return (
-    <footer className="border-t border-line">
-      <Container className="flex flex-col justify-between gap-8 py-10 md:flex-row">
+    <footer className="border-t border-line bg-surface">
+      <Container className="grid gap-10 py-14 lg:grid-cols-[1.2fr_2fr]">
         <div>
-          <Link to="/" className="font-heading text-2xl font-bold tracking-tight">
-            Zack<span className="text-brand">grafix</span>
+          <Link to="/" className="font-heading text-2xl font-bold">
+            Zack<span className="text-sage">grafix</span>
           </Link>
-          <p className="mt-3 max-w-sm text-sm leading-6 text-muted">
-            A home for remarkable design, starting in Rwanda.
+          <p className="mt-4 max-w-xs text-sm leading-7 text-muted">
+            Helping talent become visible, demonstrate their abilities,
+            and connect with opportunity.
           </p>
         </div>
 
-        <nav aria-label="Footer navigation" className="flex flex-wrap items-start gap-x-7 gap-y-4 text-sm">
-          <a href={href("work")} className="hover:text-cta">Explore work</a>
-          <a href={href("hire")} className="hover:text-cta">Hire talent</a>
-          <a href={href("how")} className="hover:text-cta">How it works</a>
-          <Link to="/join" className="hover:text-cta">Join us</Link>
-        </nav>
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+          {columns.map((column) => (
+            <nav key={column.title} aria-label={column.title}>
+              <h2 className="font-heading text-sm font-bold">{column.title}</h2>
+              <ul className="mt-4 space-y-2">
+                {column.links.map(([label, href]) => (
+                  <li key={label}>
+                    {href.includes("#") ? (
+                      <a href={href} className="inline-block py-2 text-sm text-muted hover:text-sage">
+                        {label}
+                      </a>
+                    ) : (
+                      <Link to={href} className="inline-block py-2 text-sm text-muted hover:text-sage">
+                        {label}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
+        </div>
       </Container>
 
-      <Container className="border-t border-line py-5 text-xs text-muted">
+      <Container className="border-t border-line py-6 text-xs text-muted">
         © {new Date().getFullYear()} Zackgrafix
       </Container>
     </footer>

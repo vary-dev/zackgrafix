@@ -1,45 +1,93 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ──────────────────────────────────────────
+   Design tokens
+   ────────────────────────────────────────── */
+
 @theme {
   --color-canvas: #ffffff;
-  --color-ink: #151515;
-  --color-muted: #555555;
-  --color-soft: #fff2e9;
-  --color-surface: #f7f7f5;
-  --color-line: #e6e2de;
-  --color-cta: #c94d00;
-  --color-cta-hover: #b94700;
-  --color-brand: #e85d04;
-  --font-heading: "Space Grotesk", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
+  --color-ink: #1c2417;
+  --color-muted: #55604a;
+  --color-surface: #f6f7ee;
+  --color-soft: #eef0e1;
+  --color-line: #e3e6d5;
+
+  --color-brand: #a2ab73;
+  --color-sage: #5f6b3a;
+  --color-forest: #2f4a3a;
+
+  --color-cta: #f28c28;
+  --color-cta-hover: #c2570a;
+
+  --font-heading: "Sora", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
 }
+
+/* ──────────────────────────────────────────
+   Base styles
+   ────────────────────────────────────────── */
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 96px;
+    scroll-padding-top: 100px;
     color-scheme: light;
   }
 
   html.dark {
     color-scheme: dark;
-    --color-canvas: #111111;
-    --color-ink: #f5f5f2;
-    --color-muted: #b7b7b2;
-    --color-soft: #2c2119;
-    --color-surface: #1b1b1b;
-    --color-line: #343434;
+
+    --color-canvas: #152019;
+    --color-ink: #f6f7ee;
+    --color-muted: #bac4b4;
+    --color-surface: #1e2b22;
+    --color-soft: #283528;
+    --color-line: #3c493b;
+    --color-sage: #c0cb96;
   }
 
   body {
     @apply bg-canvas text-ink font-body;
+    min-width: 320px;
     margin: 0;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img,
+  svg {
+    display: block;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
   }
 
   button,
   a,
-  input {
+  input,
+  select,
+  textarea {
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -48,38 +96,322 @@
     cursor: pointer;
   }
 
+  button:disabled {
+    cursor: not-allowed;
+  }
+
   :focus-visible {
-    outline: 3px solid var(--color-brand);
+    outline: 3px solid var(--color-sage);
     outline-offset: 4px;
   }
 
   ::selection {
-    background: #e85d04;
-    color: white;
+    background: #a2ab73;
+    color: #1c2417;
   }
 
   dialog {
-    color: var(--color-ink);
     background: var(--color-canvas);
+    color: var(--color-ink);
   }
 
   dialog::backdrop {
-    background: rgb(0 0 0 / 72%);
+    background: rgb(15 25 18 / 75%);
   }
 }
 
-/* Preserve the normal pointer and add a restrained branded halo. */
+/* ──────────────────────────────────────────
+   Shared components
+   ────────────────────────────────────────── */
+
+@layer components {
+  .section {
+    @apply py-14 lg:py-24;
+  }
+
+  .eyebrow {
+    @apply mb-3 text-xs font-bold uppercase tracking-[0.16em] text-sage;
+  }
+
+  .section-title {
+    @apply font-heading text-[28px] font-bold leading-tight tracking-tight sm:text-[40px];
+  }
+
+  /* Hand-drawn heading accent */
+  .swash {
+    position: relative;
+    isolation: isolate;
+    white-space: nowrap;
+  }
+
+  .swash::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: -2%;
+    bottom: 0.02em;
+    width: 104%;
+    height: 0.22em;
+    background: #a2ab73;
+    border-radius: 55% 35% 60% 40%;
+    transform: rotate(-2deg);
+    opacity: 0.65;
+    pointer-events: none;
+  }
+
+  .ui-button {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold;
+
+    text-align: center;
+    text-decoration: none;
+    transition:
+      background-color 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .ui-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  .ui-button:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .ui-button:disabled {
+    opacity: 0.5;
+  }
+
+  .ui-button-primary {
+    background: #f28c28;
+    color: #1c2417;
+  }
+
+  .ui-button-primary:hover:not(:disabled) {
+    background: #c2570a;
+    color: #ffffff;
+  }
+
+  .ui-button-outline {
+    @apply border-2 border-sage text-sage;
+    background: transparent;
+  }
+
+  .ui-button-outline:hover:not(:disabled) {
+    background: var(--color-soft);
+  }
+
+  .text-link {
+    @apply inline-flex min-h-11 items-center gap-2 text-sm font-bold text-sage underline-offset-4;
+
+    transition: color 180ms ease;
+  }
+
+  .text-link:hover {
+    text-decoration: underline;
+  }
+
+  .image-slot {
+    @apply grid place-items-center rounded-2xl border border-dashed border-line bg-soft p-5 text-center text-sm text-muted;
+
+    overflow: hidden;
+  }
+}
+
+/* ──────────────────────────────────────────
+   Illustrated hero
+   ────────────────────────────────────────── */
+
+.flow-board {
+  position: relative;
+  width: 100%;
+  min-height: 360px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: 32px;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgb(162 171 115 / 18%),
+      transparent 60%
+    ),
+    var(--color-surface);
+}
+
+.flow-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #a2ab73;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 7;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.flow-lines path {
+  animation: flow-intro 900ms ease-out both;
+}
+
+.flow-node,
+.flow-center {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flow-node {
+  width: 31%;
+  animation: node-intro 450ms ease-out both;
+  animation-delay: var(--node-delay, 0ms);
+}
+
+.flow-designer {
+  top: 9%;
+  left: 2%;
+}
+
+.flow-developer {
+  top: 9%;
+  right: 2%;
+}
+
+.flow-leader {
+  bottom: 13%;
+  left: 2%;
+}
+
+.flow-hub {
+  bottom: 13%;
+  right: 2%;
+}
+
+.flow-center {
+  top: 38%;
+  left: 50%;
+  width: 44%;
+  transform: translateX(-50%);
+}
+
+.flow-outcome {
+  position: absolute;
+  bottom: 7%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #f28c28;
+  color: #1c2417;
+
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+/* ──────────────────────────────────────────
+   Role cards
+   ────────────────────────────────────────── */
+
+.role-tile {
+  display: block;
+  height: 100%;
+  padding: 28px;
+  border-radius: 24px;
+  color: #1c2417;
+  text-decoration: none;
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.role-tile:hover,
+.role-tile:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgb(47 74 58 / 10%);
+}
+
+.role-tile:active {
+  transform: translateY(-1px);
+}
+
+/* ──────────────────────────────────────────
+   Process timeline
+   ────────────────────────────────────────── */
+
+.path-step {
+  position: relative;
+  padding-top: 22px;
+  border-top: 2px solid var(--color-line);
+}
+
+.path-step::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #a2ab73;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.path-step:last-child::before {
+  background: #f28c28;
+}
+
+.path-steps[data-visible="true"] .path-step::before {
+  animation: step-fill 500ms ease-out forwards;
+  animation-delay: var(--step-delay, 0ms);
+}
+
+/* ──────────────────────────────────────────
+   Gallery
+   ────────────────────────────────────────── */
+
+.gallery-card {
+  width: 100%;
+  min-width: 0;
+}
+
+.gallery-card img {
+  transition: transform 250ms ease;
+}
+
+.gallery-card:hover img,
+.gallery-card:focus-visible img {
+  transform: scale(1.025);
+}
+
+/* ──────────────────────────────────────────
+   Cursor halo
+   ────────────────────────────────────────── */
+
 .cursor-halo {
   position: fixed;
   inset: 0 auto auto 0;
   z-index: 100;
+
   width: 24px;
   height: 24px;
-  border: 1px solid #e85d04;
+  border: 1px solid #c2570a;
   border-radius: 50%;
-  pointer-events: none;
+
   opacity: 0;
+  pointer-events: none;
   translate: -50% -50%;
+
   transition:
     width 140ms ease,
     height 140ms ease,
@@ -87,9 +419,71 @@
 }
 
 .cursor-halo[data-active="true"] {
-  width: 40px;
-  height: 40px;
-  background: rgb(232 93 4 / 9%);
+  width: 38px;
+  height: 38px;
+  background: rgb(242 140 40 / 10%);
+}
+
+/* ──────────────────────────────────────────
+   Animation definitions
+   ────────────────────────────────────────── */
+
+@keyframes node-intro {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes flow-intro {
+  from {
+    opacity: 0;
+    stroke-dashoffset: 24;
+  }
+
+  to {
+    opacity: 0.7;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes step-fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ──────────────────────────────────────────
+   Small screens
+   ────────────────────────────────────────── */
+
+@media (max-width: 380px) {
+  .flow-board {
+    min-height: 330px;
+    border-radius: 24px;
+  }
+
+  .flow-center {
+    top: 36%;
+  }
+
+  .flow-outcome {
+    bottom: 5%;
+    padding: 9px 12px;
+  }
+
+  .role-tile {
+    padding: 24px;
+  }
+
+  .swash {
+    white-space: normal;
+  }
 }
 
 @media (hover: none), (pointer: coarse) {
@@ -97,6 +491,10 @@
     display: none;
   }
 }
+
+/* ──────────────────────────────────────────
+   Reduced motion
+   ────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -112,5 +510,31 @@
 
   .cursor-halo {
     display: none;
+  }
+
+  .flow-node {
+    opacity: 1;
+    translate: none;
+  }
+
+  .flow-lines path {
+    opacity: 0.7;
+  }
+
+  .path-step::before {
+    transform: scaleX(1);
+  }
+
+  .role-tile:hover,
+  .role-tile:focus-visible,
+  .role-tile:active,
+  .ui-button:hover,
+  .ui-button:active {
+    transform: none;
+  }
+
+  .gallery-card img,
+  .gallery-card span {
+    transform: none !important;
   }
 }

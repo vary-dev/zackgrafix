@@ -6,6 +6,8 @@ import CursorHalo from "./components/CursorHalo";
 import Hero from "./sections/Hero";
 import LandingSections from "./sections/LandingSections";
 import Join from "./pages/Join";
+import TalentDirectory from "./pages/TalentDirectory";
+import TalentProfile from "./pages/TalentProfile";
 
 function Home() {
   return (
@@ -45,14 +47,17 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/join" element={<Join />} />
+          <Route path="/talent" element={<TalentDirectory />} />
+          <Route
+            path="/talent/:id"
+            element={<TalentProfile key={pathname} />}
+          />
           <Route
             path="*"
             element={
-              <div className="px-5 py-20 text-center">
-                <h1 className="font-heading text-3xl font-semibold">Page not found</h1>
-                <Link to="/" className="mt-5 inline-block underline">
-                  Return home
-                </Link>
+              <div className="section text-center">
+                <h1 className="section-title">Page not found</h1>
+                <Link to="/" className="text-link mt-5">Return home</Link>
               </div>
             }
           />
