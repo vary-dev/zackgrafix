@@ -1,14 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
 export default function useTheme() {
   const [isDark, setIsDark] = useState(() =>
-    document.documentElement.classList.contains('dark')
-  )
+    document.documentElement.classList.contains("dark")
+  );
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDark)
-    localStorage.setItem('theme', isDark ? 'dark' : 'light')
-  }, [isDark])
+    document.documentElement.classList.toggle("dark", isDark);
 
-  return { isDark, toggle: () => setIsDark((v) => !v) }
+    try {
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    } catch {
+      // Changing the theme does not require persistent storage.
+    }
+  }, [isDark]);
+
+  return {
+    isDark,
+    toggle: () => setIsDark((current) => !current),
+  };
 }
